@@ -1,4 +1,9 @@
 #!/bin/bash
+
+###########################
+###### COMMENT PART #######
+###########################
+
 # OpenVPN installer for Debian, Ubuntu and CentOS/Redhat
 # Created by Vlku 10/7/2017 - vlku@null.net
 
@@ -8,6 +13,10 @@
 # your Debian/Ubuntu/CentOS box. It has been designed to be as unobtrusive and
 # universal as possible.
 
+
+###########################
+##### MAIN CODE PART ######
+###########################
 
 # Detect Debian users running the script with "sh" instead of bash
 if readlink /proc/$$/exe | grep -qs "dash"; then
