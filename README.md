@@ -12,4 +12,4 @@ All forks for the scripts in this repo should be created under separate branches
 
 ### Who do I talk to? ###
 
-Repository owner: Paweł 'vlku' Wilk @ vlku@null.net
+Repository owner: Paweł Wilk @ vlku@null.net
