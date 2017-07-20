@@ -1,4 +1,9 @@
 #!/bin/bash
+
+###########################
+###### COMMENT PART #######
+###########################
+
 # FTP installer for Debian, Ubuntu and CentOS/Redhat
 # Created by Vlku 10/7/2017 - vlku@null.net
 
