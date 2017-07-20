@@ -6,10 +6,10 @@ Please note you may run into issues while running my scripts on Linux distributi
 
 ### Contribution guidelines ###
 
-Please submit your opinions, reviews or suggestions to vlku@null.net
+Please submit your opinions, reviews or suggestions to inf0-box@null.net
 
 All forks for the scripts in this repo should be created under separate branches. The master directory is under my control only.
 
 ### Who do I talk to? ###
 
-Repository owner: Paweł 'vlku' Wilk
+Repository owner: Paweł 'vlku' Wilk @ vlku@null.net
