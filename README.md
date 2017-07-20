@@ -8,4 +8,4 @@ Please submit your opinions, reviews or suggestions to vlku@null.net
 
 ### Who do I talk to? ###
 
-Repository owner: Paweł 'Vlku' Wilk
+Repository owner: Paweł 'vlku' Wilk
