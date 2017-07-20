@@ -1,5 +1,5 @@
 #!/bin/bash
-# OpenVPN installer for Debian, Ubuntu and CentOS
+# OpenVPN installer for Debian, Ubuntu and CentOS/Redhat
 # Created by Vlku 10/7/2017 - vlku@null.net
 
 # This script will work on Debian, Ubuntu, CentOS and probably other distros
