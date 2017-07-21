@@ -6,7 +6,7 @@ Please note you may run into issues while running my scripts on Linux distributi
 
 ### Contribution guidelines ###
 
-Please submit your opinions, reviews or suggestions to inf0-box@null.net
+Please submit your opinions, reviews or suggestions to info-box@null.net
 
 All forks for the scripts in this repo should be created under separate branches. The master directory is under my control only.
 
