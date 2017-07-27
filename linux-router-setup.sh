@@ -51,9 +51,20 @@ clear
 	echo "I need to ask you a few questions before starting the setup"
 	echo "You can leave the default options and just press enter if you are ok with them"
 	echo ""
-	echo "First I need to know the IPv4 address of the WAN interface"
-	read -p "IP address: " -e -i $IP IP
-  echo ""
+	echo "First, is your WAN interface connected to DHCP or do you have a static address?"
+  echo "Do you want this router to also act as DHCP server for the network?"
+  read -p "''y' - yes; 'n' - no: " -e -i n DHCP
+    if [[ "$DHCP" == "n" ]]; then
+      echo "First I need to know the IPv4 address of the WAN interface"
+      read -p "IP address: " -e -i $IP IP
+      echo ""
+      echo "Ok, now the gateway address of the WAN interface"
+      read -p "Gateway address: " -e -i gateway GW
+      echo ""
+      echo "And the network mask provided by your ISP"
+      read -p "Network mask: " -e -i mask MSK
+      echo ""
+    fi
   echo "Which ethernet port should act as WAN interface?"
 	read -p "Interface [examples: eth0, ens32]: " -e -i eth0 WANinterface
     if [[(ip link "$WANinterface") == *"does not exist."*]]
@@ -73,24 +84,46 @@ clear
 # Setting up the interface addressing with the gathered information
 rm /etc/network/interfaces
 touch /etc/network/interfaces
-echo "# The loopback network interface
-auto lo eth0
-iface lo inet loopback
+if [[ "$DHCP" == "y" ]]; then
+  echo "# The loopback network interface
+  auto lo eth0
+  iface lo inet loopback
 
-pre-up iptables-restore < /etc/iptables.rules
+  pre-up iptables-restore < /etc/iptables.rules
 
-# The external WAN interface
-allow-hotplug "$WANinterface"
-iface eth0 inet statis
-  address "$IP"
+  # The external WAN interface
+  allow-hotplug "$WANinterface"
+  iface eth0 inet dhcp
 
-# The internal LAN interface (eth1)
-allow-hotplug "$LANinterface"
-iface eth1 inet static
-   address 172.18.0.1
-   netmask 255.255.255.0
-   network 172.18.0.0
-   broadcast 172.18.0.255" > /etc/network/interfaces
+  # The internal LAN interface
+  allow-hotplug "$LANinterface"
+  iface eth1 inet static
+     address 172.18.0.1
+     netmask 255.255.255.0
+     network 172.18.0.0
+     broadcast 172.18.0.255" > /etc/network/interfaces
+fi else
+  echo "# The loopback network interface
+  auto lo eth0
+  iface lo inet loopback
+
+  pre-up iptables-restore < /etc/iptables.rules
+
+  # The external WAN interface
+  allow-hotplug "$WANinterface"
+  iface eth0 inet statis
+    address "$IP"
+    netmask "$MSK"
+    gateway "$GW"
+
+  # The internal LAN interface
+  allow-hotplug "$LANinterface"
+  iface eth1 inet static
+    address 172.18.0.1
+    netmask 255.255.255.0
+    network 172.18.0.0
+    broadcast 172.18.0.255" > /etc/network/interfaces
+  fi
 
 # DNS configuration
 echo "nameserver 8.8.8.8
