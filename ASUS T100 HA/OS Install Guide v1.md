@@ -1,9 +1,9 @@
-## Install Linux on Asus T100HA ##
+# Install Linux on Asus T100HA ##
 
 This is a fully documented guide on how to install Arch Linux on Asus T100HA/Cherry Trail device. This guide comes WITHOUT ANY WARRANTY, use it on your own risk.
 
 
-# 1. Use Arch Linux #
+## 1. Use Arch Linux #
 
 Download the most recent Arch Linux arch.iso from the official repository and burn it to the USB drive using the following command
 
@@ -12,20 +12,20 @@ Download the most recent Arch Linux arch.iso from the official repository and bu
 On Windows you can use software like Rufus to do the same.
 
 
-# 2. Prepare Installation #
+## 2. Prepare Installation #
 
 Restart your device. At boot press [F2], then go to Security and then Secure Boot Menu. Choose the option 'Disabled'. This is needed to enable EFI boot for the up-to-date (unknown signed) kernel. Leave BIOS with [F10] -> [Return]. 
 At reboot press [Esc] and choose the USB drive. It is going to be lsited under its model name. Start with [Enter].
 
 
-# 2.1 Screen Rotation #
+### 2.1 Screen Rotation #
 
 As you can see, the display is stuck in the portrait mode. To fix that, use the following command:
 
 *echo 3 | sudo tee /sys/class/graphics/fbcon/rotate
 
 
-# 2.2 Network #
+### 2.2 Network #
 
 You will need internet access in order to install Arch Linux. As the wifi is down at this stage, a ether dongle or USB tethering is a must.
 After connecting the WAN (either by Ethernet or USB), you need to enable DHCP on the adapter to get the internet access. 
@@ -34,7 +34,7 @@ After connecting the WAN (either by Ethernet or USB), you need to enable DHCP on
 *dhcpcd enpXXXXXX		# Replace enpXXXXXX with your adapter number
 
 
-# 3. System Setup #
+## 3. System Setup #
 
 Use the following commands in the exact same order to avoid mistakes
 
@@ -62,7 +62,7 @@ arch-chroot /mnt
 At this point you should be logged in as root to the base system
 
 
-# 3.1 System Configuration #
+### 3.1 System Configuration #
 
 Now it's time to configure the basic settings on the system. Let's start with locale (system language)
 
@@ -100,7 +100,7 @@ Now it's time to configure the user. Replace uname with your desired username:
 passwd uname
 
 
-# 3.2 Finish up the setup #
+### 3.2 Finish up the setup #
 
 *pacman -S iasl wget		# Installs iasl and wget
 exit				# Exits the system and goes back to the installation media
@@ -108,7 +108,7 @@ umount -R /mnt			# Unmounts the /mnt from the installation media
 reboot				# Remember to remove the installation media before the BIOS starts up
 
 
-# 4. WLAN (wi-fi) Fix #
+## 4. WLAN (wi-fi) Fix #
 
 After the reboot, log into the system as root. Ignore any errors before the login prompt by pressing [ENTER] (it might warn you about backlight and USB drivers failure)
 
