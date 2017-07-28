@@ -208,10 +208,10 @@ Insert initrd /acpi_override before initrd /initramfs-linux.img
 
 Log back in as root and download the driver package
 
-> wget https://android.googlesource.com/platform/hardware/broadcom/wlan/+archive/master/bcmdhd/firmware/bcm43341.tar.gz
+> wget https://github.com/wi1ku/linux/raw/master/T100HA/wlandriver.tar.gz
 
 Unpack the driver
-> tar xf bcm43341.tar.gz						
+> tar xf wlandriver.tar.gz						
 
 Copy the driver to kernel
 > cp fw_bcm43341.bin /lib/firmware/brcm/brcmfmac43340-sdio.bin		
