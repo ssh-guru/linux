@@ -8,11 +8,11 @@ Please note you may run into issues while running my scripts on Linux distributi
 
 ## Folder Summary ##
 
-Asus T100HA - Complete guide on how to install Linux on Cherry Trail Asus T100HA
-
 FTP - scripts for file sharing; FTP/SFTP installation scripts etc.
 
 OpenVPN - installation script, other tools
+
+T100HA - Complete guide on how to install Linux on Cherry Trail Asus T100HA
 
 vRouter - script for turning your Linux box into a router
 
