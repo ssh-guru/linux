@@ -2,6 +2,7 @@
 
 This is a fully documented guide on how to install Arch Linux on Asus T100HA/Cherry Trail device. This guide comes WITHOUT ANY WARRANTY, use it on your own risk.
 
+.
 
 ## 1. Use Arch Linux #
 
@@ -11,6 +12,7 @@ Download the most recent Arch Linux arch.iso from the official repository and bu
 
 On Windows you can use software like Rufus to do the same.
 
+.
 
 ## 2. Prepare Installation #
 
@@ -36,6 +38,7 @@ Run this command to get the adapter number i.e. enp20s2u4u4u4
 Replace enpXXXXXX with your adapter number
 > dhcpcd enpXXXXXX
 
+.
 
 ## 3. System Setup #
 
@@ -162,6 +165,7 @@ Unmounts the /mnt from the installation media
 Remember to remove the installation media before the BIOS starts up
 > reboot			
 
+.
 
 ## 4. WLAN (wi-fi) Fix #
 
