@@ -32,7 +32,8 @@ After connecting the WAN (either by Ethernet or USB), you need to enable DHCP on
 
 Run this command to get the adapter number i.e. enp20s2u4u4u4
 > ip link			
-eplace enpXXXXXX with your adapter number
+
+Replace enpXXXXXX with your adapter number
 > dhcpcd enpXXXXXX
 
 
@@ -42,8 +43,10 @@ Use the following commands in the exact same order to avoid mistakes
 
 Load your keyboard settings. Look up name of the setup you need on the Internet and replace pl with it
 > loadkeys pl			
-Setup the timezone
+
+etup the timezone
 > timedatectl set-ntp true	
+
 Start the disk format; use the next commands in the exact same order
 > fdisk /dev/mmcblk0		
 
