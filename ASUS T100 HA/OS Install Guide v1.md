@@ -30,32 +30,45 @@ As you can see, the display is stuck in the portrait mode. To fix that, use the 
 You will need internet access in order to install Arch Linux. As the wifi is down at this stage, a ether dongle or USB tethering is a must.
 After connecting the WAN (either by Ethernet or USB), you need to enable DHCP on the adapter to get the internet access. 
 
-> ip link			# Run this command to get the adapter number i.e. enp20s2u4u4u4
-> dhcpcd enpXXXXXX		# Replace enpXXXXXX with your adapter number
+Run this command to get the adapter number i.e. enp20s2u4u4u4
+> ip link			
+eplace enpXXXXXX with your adapter number
+> dhcpcd enpXXXXXX
 
 
 ## 3. System Setup #
 
 Use the following commands in the exact same order to avoid mistakes
 
-> loadkeys pl			# Load your keyboard settings. Look up name of the setup you need on the Internet and replace pl with it
-> timedatectl set-ntp true	# Setup the timezone
-> fdisk /dev/mmcblk0		# Start the disk format; use the next commands in the exact same order
->	d			# Use it as many times as you need and confirm the default. It is going to delete the existing partition table
->	n			# Creates boot partition. Press [Enter] two times to accept the defaults and put +512M as the last parameter
->	t			# Sets the newly created partition as boot. Put 1 as the parameter
->	n			# Creates swap partition. Press [Enter] two times to accept the defaults and put +4G as the last parameter
->	t			# Sets the newly created partition as swap. Put 19 as the parameter
->	n			# Creates data partition. Press [Enter] three times to accept the defaults
->	w 			# Writes the changes to the partition table
-> mkfs.fat /dev/mmcblk0p1	# Formats the partition 1 (boot) to FAT
-> mkswap /dev/mmcblk0p2		# Creates swap at partition 2
-> mkfs.ext4 /dev/mmcblk0p3	# Formats the partition 3 (data) to ext4	
-> swapon /dev/mmcblk0p2		# Starts swap at partition 2
-> mount /dev/mmcblk0p3 /mnt	# Mounts the data partition at /mnt point
-> mkdir /mnt/boot		# Creates the boot directory at /mnt
-> mount /dev/mmcblk0p1 /mnt/boot # Mounts the boot partition at /mnt/boot
-> pacstrap /mnt base		# Installs the base system on /mnt
+Load your keyboard settings. Look up name of the setup you need on the Internet and replace pl with it
+> loadkeys pl			
+Setup the timezone
+> timedatectl set-ntp true	
+Start the disk format; use the next commands in the exact same order
+> fdisk /dev/mmcblk0		
+d			# Use it as many times as you need and confirm the default. It is going to delete the existing partition table
+n			# Creates boot partition. Press [Enter] two times to accept the defaults and put +512M as the last parameter
+t			# Sets the newly created partition as boot. Put 1 as the parameter
+n			# Creates swap partition. Press [Enter] two times to accept the defaults and put +4G as the last parameter
+t			# Sets the newly created partition as swap. Put 19 as the parameter
+n			# Creates data partition. Press [Enter] three times to accept the defaults
+w 			# Writes the changes to the partition table
+Formats the partition 1 (boot) to FAT
+> mkfs.fat /dev/mmcblk0p1	
+Creates swap at partition 2
+> mkswap /dev/mmcblk0p2	 
+Formats the partition 3 (data) to ext4	
+> mkfs.ext4 /dev/mmcblk0p3	
+Starts swap at partition 2
+> swapon /dev/mmcblk0p2	
+Mounts the data partition at /mnt point
+> mount /dev/mmcblk0p3 /mnt	
+Creates the boot directory at /mnt
+> mkdir /mnt/boot		
+Mounts the boot partition at /mnt/boot
+> mount /dev/mmcblk0p1 /mnt/boot 
+Installs the base system on /mnt
+> pacstrap /mnt base
 > genfstab -U /mnt >> /mnt/etc/fstab
 > arch-chroot /mnt	
 
@@ -67,15 +80,24 @@ At this point you should be logged in as root to the base system
 Now it's time to configure the basic settings on the system. Let's start with locale (system language)
 
 > ln -s /usr/share/zoneinfo/Region/City /etc/localtime
-> hwclock --systohc --utc				# Sets the hardware clock to UTC. Change the parameter to match your timezone
-> nano /etc/locale.gen				# Uncomment the locale you need. Save with [Ctrl]+[O], quit with [Ctrl]+[X]
-> locale-gen					# This will apply your selection from the command above to the system
-> echo LANG=en_EN.UTF-8 > /etc/locale.conf	# Change en_EN.UTF-8 to your locale name	
-> echo KEYMAP=pl > /etc/vconsole.conf		# Change pl to your keymap name
-> echo myhostname > /etc/hostname		# Change myhostname to your desired hostname
-> nano /etc/hosts				# Insert 127.0.0.1 myhostname.localdomain myhostname (replace myhostname with your desited hostname)
-> passwd					# Set root password
-> bootctl --path=/boot install			# Confiure boot sequence
+Sets the hardware clock to UTC. Change the parameter to match your timezone
+> hwclock --systohc --utc		
+Uncomment the locale you need. Save with [Ctrl]+[O], quit with [Ctrl]+[X]
+> nano /etc/locale.gen	
+This will apply your selection from the command above to the system
+> locale-gen					
+Change en_EN.UTF-8 to your locale name	
+> echo LANG=en_EN.UTF-8 > /etc/locale.conf
+Change pl to your keymap name
+> echo KEYMAP=pl > /etc/vconsole.conf		
+Change myhostname to your desired hostname
+> echo myhostname > /etc/hostname		
+Insert 127.0.0.1 myhostname.localdomain myhostname (replace myhostname with your desited hostname)
+> nano /etc/hosts			
+Set root password
+> passwd					
+Confiure boot sequence
+> bootctl --path=/boot install			
 
 In the next few steps, we will apply a pernament fix to the display rotation and finish the boot configuration. First, we need to run the following command to copy the data disk UUID to the arch.conf (boot config file)
 
@@ -102,19 +124,25 @@ Now it's time to configure the user. Replace uname with your desired username:
 
 ### 3.2 Finish up the setup #
 
-> pacman -S iasl wget		# Installs iasl and wget
-> exit				# Exits the system and goes back to the installation media
-> umount -R /mnt		# Unmounts the /mnt from the installation media
-> reboot			# Remember to remove the installation media before the BIOS starts up
+Installs iasl and wget
+> pacman -S iasl wget		
+Exits the system and goes back to the installation media
+> exit	
+Unmounts the /mnt from the installation media
+> umount -R /mnt		
+Remember to remove the installation media before the BIOS starts up
+> reboot			
 
 
 ## 4. WLAN (wi-fi) Fix #
 
 After the reboot, log into the system as root. Ignore any errors before the login prompt by pressing [ENTER] (it might warn you about backlight and USB drivers failure)
 
-> cat /sys/firmware/acpi/tables/DSDT > dsdt.dat		# Copies the DSDT to dsdt.dat for easier patching
+Copies the DSDT to dsdt.dat for easier patching
+> cat /sys/firmware/acpi/tables/DSDT > dsdt.dat		
 > iasl -d dsdt.dat
-> nano dsdt.dsl						# Search for the following two lines and apply the changes
+> nano dsdt.dsl		
+Search for the following two lines and apply the changes
 
 *DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x1072009) -> DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x107200A)*
 
@@ -122,21 +150,30 @@ After the reboot, log into the system as root. Ignore any errors before the logi
 {
 Name (_ADR, Zero) // _ADR: Address -> Name (WADR, Zero) // _ADR: Address*
 
-> iasl -tc dsdt.dsl					# Apply the change
-> mkdir -p kernel/firmware/acpi				# Creates a directory in the kernel for the patch
-> cp dsdt.aml kernel/firmware/acpi			# Copeis the patch to the kernel folder
-> find kernel | cpio -H newc --create > acpi_override	# Creates a boot note for the patch
-> cp acpi_override /boot				# Creates a boot record for the patch
-> nano /boot/loader/entries/arch.conf			# Insert initrd /acpi_override before initrd /initramfs-linux.img
+Apply the change
+> iasl -tc dsdt.dsl				
+Creates a directory in the kernel for the patch
+> mkdir -p kernel/firmware/acpi		
+Copeis the patch to the kernel folder
+> cp dsdt.aml kernel/firmware/acpi			
+Creates a boot note for the patch
+> find kernel | cpio -H newc --create > acpi_override	
+Creates a boot record for the patch
+> cp acpi_override /boot				
+Insert initrd /acpi_override before initrd /initramfs-linux.img
+> nano /boot/loader/entries/arch.conf			
 > reboot
 
 Log back in as root and download the driver package
 
 > wget https://android.googlesource.com/platform/hardware/broadcom/wlan/+archive/master/bcmdhd/firmware/bcm43341.tar.gz
-> tar xf bcm43341.tar.gz						# Unpack the driver
-> cp fw_bcm43341.bin /lib/firmware/brcm/brcmfmac43340-sdio.bin		# Copy the driver to kernel
+Unpack the driver
+> tar xf bcm43341.tar.gz						
+Copy the driver to kernel
+> cp fw_bcm43341.bin /lib/firmware/brcm/brcmfmac43340-sdio.bin		
 > cp /sys/firmware/efi/efivars/nvram* /lib/firmware/brcm/brcmfmac43340-sdio.txt
-> pacman -S gnome gnome-extra						# Gnome or another DE is needed for the NetworkManager; accept all defaults
+Gnome or another DE is needed for the NetworkManager; accept all defaults
+> pacman -S gnome gnome-extra						
 > systemctl restart NetworkManager				
 > systemctl restart gdm						
 
