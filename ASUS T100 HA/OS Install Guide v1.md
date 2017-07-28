@@ -1,44 +1,44 @@
-Install Linux on Asus T100HA
+## Install Linux on Asus T100HA ##
 
 This is a fully documented guide on how to install Arch Linux on Asus T100HA/Cherry Trail device. This guide comes WITHOUT ANY WARRANTY, use it on your own risk.
 
 
-1. Use Arch Linux
+# 1. Use Arch Linux #
 
 Download the most recent Arch Linux arch.iso from the official repository and burn it to the USB drive using the following command
 
-dd if=arch.iso of=/dev/sdX status=progress
+*dd if=arch.iso of=/dev/sdX status=progress
 
 On Windows you can use software like Rufus to do the same.
 
 
-2. Prepare Installation
+# 2. Prepare Installation #
 
 Restart your device. At boot press [F2], then go to Security and then Secure Boot Menu. Choose the option 'Disabled'. This is needed to enable EFI boot for the up-to-date (unknown signed) kernel. Leave BIOS with [F10] -> [Return]. 
 At reboot press [Esc] and choose the USB drive. It is going to be lsited under its model name. Start with [Enter].
 
 
-2.1 Screen Rotation
+# 2.1 Screen Rotation #
 
 As you can see, the display is stuck in the portrait mode. To fix that, use the following command:
 
-echo 3 | sudo tee /sys/class/graphics/fbcon/rotate
+*echo 3 | sudo tee /sys/class/graphics/fbcon/rotate
 
 
-2.2 Network
+# 2.2 Network #
 
 You will need internet access in order to install Arch Linux. As the wifi is down at this stage, a ether dongle or USB tethering is a must.
 After connecting the WAN (either by Ethernet or USB), you need to enable DHCP on the adapter to get the internet access. 
 
-ip link				# Run this command to get the adapter number i.e. enp20s2u4u4u4
-dhcpcd enpXXXXXX		# Replace enpXXXXXX with your adapter number
+*ip link			# Run this command to get the adapter number i.e. enp20s2u4u4u4
+*dhcpcd enpXXXXXX		# Replace enpXXXXXX with your adapter number
 
 
-3. System Setup
+# 3. System Setup #
 
 Use the following commands in the exact same order to avoid mistakes
 
-loadkeys pl			# Load your keyboard settings. Look up name of the setup you need on the Internet and replace pl with it
+*loadkeys pl			# Load your keyboard settings. Look up name of the setup you need on the Internet and replace pl 				  *with it
 timedatectl set-ntp true	# Setup the timezone
 fdisk /dev/mmcblk0		# Start the disk format; use the next commands in the exact same order
 	d			# Use it as many times as you need and confirm the default. It is going to delete the existing partition table
@@ -62,11 +62,11 @@ arch-chroot /mnt
 At this point you should be logged in as root to the base system
 
 
-3.1 System Configuration
+# 3.1 System Configuration #
 
 Now it's time to configure the basic settings on the system. Let's start with locale (system language)
 
-ln -s /usr/share/zoneinfo/Region/City /etc/localtime
+*ln -s /usr/share/zoneinfo/Region/City /etc/localtime
 hwclock --systohc --utc				# Sets the hardware clock to UTC. Change the parameter to match your timezone
 nano /etc/locale.gen				# Uncomment the locale you need. Save with [Ctrl]+[O], quit with [Ctrl]+[X]
 locale-gen					# This will apply your selection from the command above to the system
@@ -79,15 +79,15 @@ bootctl --path=/boot install			# Confiure boot sequence
 
 In the next few steps, we will apply a pernament fix to the display rotation and finish the boot configuration. First, we need to run the following command to copy the data disk UUID to the arch.conf (boot config file)
 
-blkid -s PARTUUID -o value /dev/mmcblk0p3 > /boot/loader/entries/arch.conf
+*blkid -s PARTUUID -o value /dev/mmcblk0p3 > /boot/loader/entries/arch.conf
 
 Next, lets edit the boot configuration file
 
-nano /boot/loader/entries/arch.conf
+*nano /boot/loader/entries/arch.conf
 
 and manipulate the content, so it looks like:
 
-title Arch Linux
+*title Arch Linux
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options root=PARTUUID=XXXXXXX rw video=LVDS-1:d fbcon=rotate:3
@@ -96,33 +96,33 @@ Remember to preserve the PARTUUID (disk ID) which should already be in that file
 
 Now it's time to configure the user. Replace uname with your desired username:
 
-useradd -m -G wheel -s /bin/bash uname
+*useradd -m -G wheel -s /bin/bash uname
 passwd uname
 
 
-3.2 Finish up the setup 
+# 3.2 Finish up the setup #
 
-pacman -S iasl wget		# Installs iasl and wget
+*pacman -S iasl wget		# Installs iasl and wget
 exit				# Exits the system and goes back to the installation media
 umount -R /mnt			# Unmounts the /mnt from the installation media
 reboot				# Remember to remove the installation media before the BIOS starts up
 
 
-4. WLAN (wi-fi) Fix
+# 4. WLAN (wi-fi) Fix #
 
 After the reboot, log into the system as root. Ignore any errors before the login prompt by pressing [ENTER] (it might warn you about backlight and USB drivers failure)
 
-cat /sys/firmware/acpi/tables/DSDT > dsdt.dat		# Copies the DSDT to dsdt.dat for easier patching
+*cat /sys/firmware/acpi/tables/DSDT > dsdt.dat		# Copies the DSDT to dsdt.dat for easier patching
 iasl -d dsdt.dat
 nano dsdt.dsl						# Search for the following two lines and apply the changes
 
-DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x1072009) -> DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x107200A)
+*DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x1072009) -> DefinitionBlock ("", "DSDT", 2, "_ASUS_", "Notebook", 0x107200A)
 
-Device (SDHB)
+*Device (SDHB)
 {
 Name (_ADR, Zero) // _ADR: Address -> Name (WADR, Zero) // _ADR: Address
 
-iasl -tc dsdt.dsl					# Apply the change
+*iasl -tc dsdt.dsl					# Apply the change
 mkdir -p kernel/firmware/acpi				# Creates a directory in the kernel for the patch
 cp dsdt.aml kernel/firmware/acpi			# Copeis the patch to the kernel folder
 find kernel | cpio -H newc --create > acpi_override	# Creates a boot note for the patch
@@ -132,11 +132,11 @@ reboot
 
 Log back in as root and download the driver package
 
-wget https://android.googlesource.com/platform/hardware/broadcom/wlan/+archive/master/bcmdhd/firmware/bcm43341.tar.gz
+*wget https://android.googlesource.com/platform/hardware/broadcom/wlan/+archive/master/bcmdhd/firmware/bcm43341.tar.gz
 tar xf bcm43341.tar.gz						# Unpack the driver
 cp fw_bcm43341.bin /lib/firmware/brcm/brcmfmac43340-sdio.bin	# Copy the driver to kernel
 cp /sys/firmware/efi/efivars/nvram* /lib/firmware/brcm/brcmfmac43340-sdio.txt
-pacman -S gnome gnome-extra					# Gnome or another DE is needed for the NetworkManager; accept all defaults
+*pacman -S gnome gnome-extra					# Gnome or another DE is needed for the NetworkManager; accept all defaults
 systemctl restart NetworkManager				
 systemctl restart gdm						
 
