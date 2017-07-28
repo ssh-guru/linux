@@ -208,7 +208,7 @@ Insert initrd /acpi_override before initrd /initramfs-linux.img
 
 Log back in as root and download the driver package
 
-> wget https://github.com/wi1ku/linux/raw/master/T100HA/wlandriver.tar.gz
+> wget https://github.com/vlku-admin/linux/raw/master/T100HA/wlandriver.tar.gz
 
 Unpack the driver
 > tar xf wlandriver.tar.gz						
