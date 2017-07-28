@@ -1,4 +1,4 @@
-# Install Linux on Asus T100HA ##
+# Linux installation on Asus T100HA ##
 
 This is a fully documented guide on how to install Arch Linux on Asus T100HA/Cherry Trail device. This guide comes WITHOUT ANY WARRANTY, use it on your own risk.
 
